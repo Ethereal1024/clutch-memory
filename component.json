@@ -1,0 +1,53 @@
+{
+  "name": "clutch-memory",
+  "version": "0.1.0",
+  "interface": "cli",
+  "subject": "project-file",
+  "launch": {
+    "argv": ["{py}", "{script}"],
+    "entry": "memory.py"
+  },
+  "requires": ["python"],
+  "vars": { "base": "host.port_url" },
+  "ui": { "label": "project memory", "status": true },
+  "tools": [
+    {
+      "name": "save_memory",
+      "description": "Save a durable fact from this conversation to project memory — a key decision, a user preference, or an important detail worth remembering across sessions. title must be a very short one-line summary (<=80 chars); content is the full detail. Saving the same title again overwrites it.",
+      "parameters": {
+        "properties": {
+          "title": { "type": "string", "description": "very short one-line summary of the memory" },
+          "content": { "type": "string", "description": "full detail to remember" }
+        },
+        "required": ["title", "content"]
+      },
+      "command": "--endpoint {base} --envelope save --title {title} --content {content}",
+      "gate": "project"
+    },
+    {
+      "name": "load_memory",
+      "description": "Read one stored memory's full content by its exact title.",
+      "parameters": {
+        "properties": {
+          "name": { "type": "string", "description": "the memory title to load" }
+        },
+        "required": ["name"]
+      },
+      "command": "--endpoint {base} --envelope load --title {name}",
+      "gate": "project",
+      "access": "read"
+    },
+    {
+      "name": "search_memory",
+      "description": "Search stored project memories by title or content; returns matching titles with snippets. Call with a topic to recall relevant long-term facts; an empty query lists the most recent memories.",
+      "parameters": {
+        "properties": {
+          "query": { "type": "string", "description": "topic to search for; empty lists recent" }
+        },
+        "required": []
+      },
+      "command": "--endpoint {base} --envelope search [--query {query}]",
+      "gate": "project"
+    }
+  ]
+}
