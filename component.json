@@ -10,6 +10,7 @@
   "requires": ["python"],
   "vars": { "base": "host.port_url" },
   "ui": { "label": "project memory", "status": true },
+  "prompt": "PROMPT.md",
   "tools": [
     {
       "name": "save_memory",
